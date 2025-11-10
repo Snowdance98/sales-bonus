@@ -10,7 +10,7 @@ function calculateSimpleRevenue(purchase, _product) {
    const decimalDiscount = 1 - (discount / 100);
    const revenue = sale_price * decimalDiscount * quantity;
 
-   return Math.round(revenue * 100) / 100
+   return revenue
 }
 
 /**
@@ -106,8 +106,8 @@ function analyzeSalesData(data, options) {
             const cost = product.purchase_price * item.quantity;
             const revenue = calculateRevenue(item, product);
             const profit = revenue - cost;
-                
-            totalRevenueFromRecord += revenue;
+            
+            totalRevenueFromRecord = Math.round((revenue + totalRevenueFromRecord) * 100) / 100;
             totalProfitFromRecord += profit;
 
             if (!seller.products_sold[item.sku]) {
@@ -116,7 +116,7 @@ function analyzeSalesData(data, options) {
             seller.products_sold[item.sku] += item.quantity;
         });
 
-        seller.revenue += (totalRevenueFromRecord);
+        seller.revenue += totalRevenueFromRecord;
         seller.profit += totalProfitFromRecord;
     });
 
