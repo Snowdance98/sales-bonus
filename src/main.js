@@ -7,11 +7,10 @@
 function calculateSimpleRevenue(purchase, _product) {
    // @TODO: Расчет выручки от операции
    const {discount, sale_price, quantity} = purchase;
-   const decimalDiscount = discount / 100;
-   const fullPrice = sale_price * quantity;
-   const revenue = fullPrice * (1 - decimalDiscount);
+   const decimalDiscount = 1 - (discount / 100);
+   const revenue = sale_price * decimalDiscount * quantity;
 
-   return revenue
+   return Math.round(revenue * 100) / 100
 }
 
 /**
@@ -117,7 +116,7 @@ function analyzeSalesData(data, options) {
             seller.products_sold[item.sku] += item.quantity;
         });
 
-        seller.revenue += totalRevenueFromRecord;
+        seller.revenue += (totalRevenueFromRecord);
         seller.profit += totalProfitFromRecord;
     });
 
